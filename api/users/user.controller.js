@@ -1,4 +1,10 @@
-const {create} = require('./user.service');
+const {
+    create, 
+    getUserByUserId,
+    getUsers,
+    updateUser,
+    deleteUser
+} = require('./user.service');
 const {genSaltSync,hashSync}= require("bcrypt");
 
 module.exports= {
@@ -18,6 +24,77 @@ module.exports= {
             success:1,
             data:results
         });
+    });
+},
+getUserByUserId: (req,res)=>{
+    const staff_id= req.params.staff_id
+    getUserByUserId(staff_id,(err,results)=>{
+        if (err) {
+            console.log(err);
+        }
+        if (!results) {
+            return res.json({
+                success:0,
+                message:"record not found"
+            });
+        }
+        return res.json({
+            success:1,
+            data: results
+        });
+    });
+
+},
+getUsers: (req,res)=>{
+getUsers((err,results)=>{
+    if (err) {
+        console.log(err);
+    }
+    return res.json({
+        success:1,
+        data: results
+    });
+});
+},
+updateUser: (req,res)=>{
+    const body=req.body;
+    const salt =genSaltSync(10);
+    body.password= hashSync(body.password, salt);
+    updateUser(body,(err,results)=>{
+        if (err) {
+            console.log(err);
+            return false;
+        }
+        if (!results) {
+            return res.json({
+                success:0,
+                message:"failed to update user"
+            });
+            
+        }
+        return res.json({
+            success:1,
+            message:"updated successfully"
+        });
+    });
+},
+deleteUser:(req,res)=>{
+    const data =req.body;
+    deleteUser(data,(err,results)=>{
+        if (err) {
+            console.log(err);
+        }
+        if (!results) {
+            return res.json({
+                success:0,
+                message:"record not found"
+            }) ;
+        }
+        return res.json({
+            success:1,
+            message:"user deleted successfully"
+        });
+        
     });
 }
 };
