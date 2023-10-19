@@ -1,6 +1,7 @@
 const{
  getWorkOrders,
- searchWorkOrders
+ searchWorkOrders,
+ countWorkOrders
 } = require('./workorder.service');
 
 module.exports={
@@ -33,9 +34,26 @@ module.exports={
             }
             return res.json({ 
                 success: 1, 
-                data: results
+                data: results,
              });
         } );
 
-    }
-};
+   
+},
+countWorkOrders: (req,res)=>{
+    const { open, pending, overdue, New, closed } = req.query;
+        countWorkOrders(open, pending, overdue, New, closed, (countError, countResults)=>{
+            if (countError) {
+                console.error(countError);
+                return res.status(500).json({
+                    success: 0,
+                    message: "Database error"
+                });
+            } 
+            return res.json({
+                success: 1,
+                countResults: countResults
+            });
+        })              
+}
+}
