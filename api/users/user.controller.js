@@ -113,7 +113,7 @@ login:(req,res)=>{
         const result= compareSync(body.password, results.password);
         if(result){
             results.password = undefined;
-            const jsonwebtoken = sign({result:results},"qwerty12345",{
+            const jsonwebtoken = sign({result:results},process.env.SECRET_KEY,{
                 expiresIn:"1h"
             });
             return res.json({
