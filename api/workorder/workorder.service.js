@@ -14,10 +14,10 @@ module.exports={
             }
             );
         },
-    searchWorkOrders:callback=>{
+    searchWorkOrders:(open, pending, overdue, New, closed, callback)=>{
         pool.query(
-            `select * from work_order where work_status like ?`,
-            [`%${New}%`,`%${pending}%`,`%${closed}%`,`%${overdue}%`],
+            `SELECT * FROM work_order WHERE sta_id IN (?, ?, ?, ?, ?)`,
+            [New, pending, closed, overdue, open],
             (error, results, fields) => {
                 if (error) {
                     return callback(error);
@@ -28,3 +28,5 @@ module.exports={
     }
     
     };
+   
+    

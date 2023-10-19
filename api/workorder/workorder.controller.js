@@ -1,5 +1,6 @@
 const{
  getWorkOrders,
+ searchWorkOrders
 } = require('./workorder.service');
 
 module.exports={
@@ -15,17 +16,21 @@ module.exports={
         });
     },
     searchWorkOrders: (req,res)=>{
-        const { open, pending, overdue, New,closed } = req.query;
+        const { open, pending, overdue, New, closed } = req.query;
         searchWorkOrders(open, pending, overdue, New,closed,(error,results)=>{
             if (error) {
                 console.error(error);
+                return res.status(500).json({
+                    success: 0,
+                    message: "Database error"
+                });
             }
-                if (!results) {
-                    return res.json({
-                        success:0,
-                        message:"record not found"
-                    });
-                }
+            if (!results || results.length === 0) {
+                return res.json({
+                    success: 0,
+                    message: "Search record not found"
+                });
+            }
             return res.json({ 
                 success: 1, 
                 data: results
@@ -33,5 +38,4 @@ module.exports={
         } );
 
     }
-}
-
+};
