@@ -13,6 +13,18 @@ module.exports ={
                 return callback(null, results);
             }
             );
+    },
+    findOrderBySystemName:(systemName, callback) =>{
+        pool.query(
+            `SELECT COUNT(*) AS count FROM Work_order WHERE sta_id = ?`,
+        [systemName],
+        (error, results, fields) => {
+            if (error) {
+                return callback(error);
+             }
+             return callback(null, results);
+        }
+        );
     }
    
 }
