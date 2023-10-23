@@ -14,10 +14,10 @@ module.exports ={
             }
             );
     },
-    findOrderBySystemName:(systemName, callback) =>{
+    findOrderBySystemName:(systemName,staId, callback) =>{
         pool.query(
-            `SELECT COUNT(*) AS count FROM Work_order WHERE sta_id = ?`,
-        [systemName],
+            `SELECT COUNT(*) AS count FROM Work_order WHERE system_name = ? AND sta_id = ?`,
+        [systemName,staId],
         (error, results, fields) => {
             if (error) {
                 return callback(error);
