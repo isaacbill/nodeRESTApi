@@ -1,5 +1,6 @@
 const{
-getGeneralReport
+getGeneralReport,
+findReportByCategory
 }= require('./reports.service')
 
 module.exports={
@@ -15,4 +16,16 @@ module.exports={
         });
 
     },
+    findReportByCategory:(req,res)=>{
+        const category_id  = req.params.category_id;
+        findReportByCategory(category_id,(err,results)=>{
+            if (err) {
+                console.log(err);
+            }
+            return res.json({
+                success:1,
+                data:results
+        });
+    });
+    }
 }

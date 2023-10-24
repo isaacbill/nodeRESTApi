@@ -14,4 +14,18 @@ module.exports ={
             }
             );
     },
+
+    findReportByCategory:(category_id,callback)=>{
+        pool.query(
+            `SELECT * FROM work_order WHERE category_id = ?`,
+            [category_id],
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                 }
+                 return callback(null, results);
+            }
+
+        );
+    }
 }
