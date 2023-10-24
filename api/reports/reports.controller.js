@@ -1,6 +1,7 @@
 const{
 getGeneralReport,
-findReportByCategory
+findReportByCategory,
+countReportByCategory
 }= require('./reports.service')
 
 module.exports={
@@ -27,5 +28,21 @@ module.exports={
                 data:results
         });
     });
+    },
+    countReportByCategory:(req,res)=>{
+        const category_id = req.params.category_id;
+        countReportByCategory(category_id,(err,countResults)=>{
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success:0,
+                    message:"Database error"
+                });
+            }
+            return res.json({
+                success:1,
+                countResults: countResults
+            });
+        });
     }
-}
+};

@@ -27,5 +27,18 @@ module.exports ={
             }
 
         );
+    },
+    countReportByCategory:(category_id ,callback)=>{
+        pool.query(
+            `SELECT COUNT(*) AS count FROM work_order WHERE category_id=?`,
+            [category_id],
+            (error,results,fields)=>{
+                if (error) {
+                    return  callback(error);
+                }
+                return callback(null,results);
+            }
+        );
     }
+
 }

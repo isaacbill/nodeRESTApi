@@ -14,10 +14,10 @@ module.exports={
             }
             );
         },
-    searchWorkOrders:(open, pending, overdue, New, closed, callback)=>{
+    searchWorkOrders:(sta_id, callback)=>{
         pool.query(
-            `SELECT * FROM work_order WHERE sta_id IN (?, ?, ?, ?, ?)`,
-            [New, pending, closed, overdue, open],
+            `SELECT * FROM work_order WHERE sta_id=?`,
+            [sta_id],
             (error, results, fields) => {
                 if (error) {
                     return callback(error);
@@ -26,21 +26,16 @@ module.exports={
             }
         );
     },
-    countWorkOrders: (open, pending, overdue, New, closed, callback) => {
+    countWorkOrders: (sta_id, callback) => {
         pool.query(
-            `SELECT 
-                COUNT(CASE WHEN sta_id = ? THEN 1 END) AS open_count,
-                COUNT(CASE WHEN sta_id = ? THEN 1 END) AS pending_count,
-                COUNT(CASE WHEN sta_id = ? THEN 1 END) AS closed_count,
-                COUNT(CASE WHEN sta_id = ? THEN 1 END) AS overdue_count,
-                COUNT(CASE WHEN sta_id = ? THEN 1 END) AS new_count
-            FROM work_order`,
-            [open, pending, closed, overdue, New],
+            
+            `SELECT COUNT(*) AS count FROM work_order WHERE sta_id=?`,
+            [sta_id],
             (error, countResults, fields) => {
                 if (error) {
                     return callback(error);
                 }
-                return callback(null, countResults[0]);
+                return callback(null, countResults);
             }
         );
     }

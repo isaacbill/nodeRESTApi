@@ -17,8 +17,8 @@ module.exports={
         });
     },
     searchWorkOrders: (req,res)=>{
-        const { open, pending, overdue, New, closed } = req.query;
-        searchWorkOrders(open, pending, overdue, New,closed,(error,results)=>{
+        const  sta_id  = req.params.sta_id;
+        searchWorkOrders(sta_id,(error,results)=>{
             if (error) {
                 console.error(error);
                 return res.status(500).json({
@@ -41,8 +41,8 @@ module.exports={
    
 },
 countWorkOrders: (req,res)=>{
-    const { open, pending, overdue, New, closed } = req.query;
-        countWorkOrders(open, pending, overdue, New, closed, (countError, countResults)=>{
+    const sta_id = req.params.sta_id;
+        countWorkOrders(sta_id, (countError, countResults)=>{
             if (countError) {
                 console.error(countError);
                 return res.status(500).json({
@@ -54,6 +54,6 @@ countWorkOrders: (req,res)=>{
                 success: 1,
                 countResults: countResults
             });
-        })              
+        }) ;             
 }
 }
